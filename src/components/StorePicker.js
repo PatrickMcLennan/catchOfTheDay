@@ -5,8 +5,10 @@ class StorePicker extends Component {
   myInput = React.createRef();
 
   goToStore = (event) => {
+    const storeName = this.myInput.current.value;
+    const { props } = this;
     event.preventDefault();
-    console.log(this.myInput.current.value);
+    props.history.push(`/store/${storeName}`);
   }
 
   render() {
