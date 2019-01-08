@@ -31,8 +31,8 @@ class AddFishForm extends Component {
         <input name="name" ref={this.nameRef} type="text" placeholder="Name" />
         <input name="price" ref={this.priceRef} type="number" placeholder="Price" />
         <select name="status" ref={this.statusRef}>
-          <option>Fresh!</option>
-          <option>Sold Out</option>
+          <option value="available">Fresh!</option>
+          <option value="unavailable">Sold Out</option>
         </select>
         <textarea name="desc" ref={this.descRef} placeholder="Description" />
         <input name="image" type="text" ref={this.imageRef} placeholder="Image" />
