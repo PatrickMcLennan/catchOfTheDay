@@ -1,56 +1,48 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-
-class EditFishForm extends Component {
+class EditFishForm extends React.Component {
   static propTypes = {
     fish: PropTypes.shape({
-      name: PropTypes.string,
-      status: PropTypes.string,
-      desc: PropTypes.string,
       image: PropTypes.string,
-      price: PropTypes.number,
+      name: PropTypes.string,
+      desc: PropTypes.string,
+      status: PropTypes.string,
+      price: PropTypes.number
     }),
     index: PropTypes.string,
-    updateFish: PropTypes.func,
-  }
-
-  handleChange = (event) => {
+    updateFish: PropTypes.func
+  };
+  handleChange = event => {
+    console.log(event.currentTarget.value);
+    // update that fish
+    // 1. Take a copy of the curernt fish
     const updatedFish = {
       ...this.props.fish,
-      [event.currentTarget.name]: event.currentTarget.value,
+      [event.currentTarget.name]: event.currentTarget.value
     };
     this.props.updateFish(this.props.index, updatedFish);
-  }
-
+  };
   render() {
-    const {
-      name,
-      price,
-      status,
-      desc,
-      image,
-    } = this.props.fish;
-    const { deleteFish, index } = this.props;
     return (
       <div className="fish-edit">
         <input
           type="text"
           name="name"
           onChange={this.handleChange}
-          value={name}
+          value={this.props.fish.name}
         />
         <input
-          type="number"
+          type="text"
           name="price"
           onChange={this.handleChange}
-          value={price}
+          value={this.props.fish.price}
         />
         <select
           type="text"
           name="status"
           onChange={this.handleChange}
-          value={status}
+          value={this.props.fish.status}
         >
           <option value="available">Fresh!</option>
           <option value="unavailable">Sold Out!</option>
@@ -58,15 +50,17 @@ class EditFishForm extends Component {
         <textarea
           name="desc"
           onChange={this.handleChange}
-          value={desc}
+          value={this.props.fish.desc}
         />
         <input
           type="text"
           name="image"
           onChange={this.handleChange}
-          value={image}
+          value={this.props.fish.image}
         />
-        <button onClick={() => deleteFish(index)}>Remove Fish</button>
+        <button onClick={() => this.props.deleteFish(this.props.index)}>
+          Remove Fish
+        </button>
       </div>
     );
   }
