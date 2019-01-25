@@ -1,22 +1,24 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { formatPrice } from "../helpers";
-import { TransitionGroup, CSSTransition } from "react-transition-group";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import { formatPrice } from '../helpers';
 
-class Order extends React.Component {
+class Order extends Component {
   static propTypes = {
-    fishes: PropTypes.object,
-    order: PropTypes.object,
-    removeFromOrder: PropTypes.func
+    fishes: PropTypes.object.isRequired,
+    order: PropTypes.object.isRequired,
+    removeFromOrder: PropTypes.func.isRequired,
   };
-  renderOrder = key => {
-    const fish = this.props.fishes[key];
-    const count = this.props.order[key];
-    const isAvailable = fish && fish.status === "available";
+
+  renderOrder = (key) => {
+    const { fishes, order, removeFromOrder } = this.props;
+    const fish = fishes[key];
+    const count = order[key];
+    const isAvailable = fish && fish.status === 'available';
     const transitionOptions = {
-      classNames: "order",
+      classNames: 'order',
       key,
-      timeout: { enter: 500, exit: 500 }
+      timeout: { enter: 500, exit: 500 },
     };
     // Make sure the fish is loaded before we continue!
     if (!fish) return null;
@@ -25,7 +27,11 @@ class Order extends React.Component {
       return (
         <CSSTransition {...transitionOptions}>
           <li key={key}>
-            Sorry {fish ? fish.name : "fish"} is no longer available
+            Sorry
+            {' '}
+            {fish ? fish.name : 'fish'}
+            {' '}
+is no longer available
           </li>
         </CSSTransition>
       );
@@ -43,9 +49,11 @@ class Order extends React.Component {
                 <span>{count}</span>
               </CSSTransition>
             </TransitionGroup>
-            lbs {fish.name}
+            lbs
+            {' '}
+            {fish.name}
             {formatPrice(count * fish.price)}
-            <button onClick={() => this.props.removeFromOrder(key)}>
+            <button onClick={() => removeFromOrder(key)}>
               &times;
             </button>
           </span>
@@ -53,12 +61,14 @@ class Order extends React.Component {
       </CSSTransition>
     );
   };
+
   render() {
-    const orderIds = Object.keys(this.props.order);
+    const { order, fishes } = this.props;
+    const orderIds = Object.keys(order);
     const total = orderIds.reduce((prevTotal, key) => {
-      const fish = this.props.fishes[key];
-      const count = this.props.order[key];
-      const isAvailable = fish && fish.status === "available";
+      const fish = fishes[key];
+      const count = order[key];
+      const isAvailable = fish && fish.status === 'available';
       if (isAvailable) {
         return prevTotal + count * fish.price;
       }

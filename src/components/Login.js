@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const Login = props => (
   <nav className="login">
@@ -9,7 +10,8 @@ const Login = props => (
   </nav>
 );
 
+Login.propTypes = {
+  authenticate: PropTypes.func.isRequired,
+};
+
 export default Login;
-
-
-// 20:36 authentication

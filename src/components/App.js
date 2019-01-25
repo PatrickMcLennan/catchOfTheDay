@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Header from './Header';
 import Order from './Order';
@@ -7,14 +7,14 @@ import sampleFishes from '../sample-fishes';
 import Fish from './Fish';
 import base from '../base';
 
-class App extends React.Component {
+class App extends Component {
   state = {
     fishes: {},
     order: {},
   };
 
   static propTypes = {
-    match: PropTypes.object,
+    match: PropTypes.object.isRequired,
   };
 
   componentDidMount() {
@@ -32,9 +32,11 @@ class App extends React.Component {
   }
 
   componentDidUpdate() {
+    const { match } = this.props;
+    const { order } = this.state;
     localStorage.setItem(
-      this.props.match.params.storeId,
-      JSON.stringify(this.state.order),
+      match.params.storeId,
+      JSON.stringify(order),
     );
   }
 
@@ -92,24 +94,26 @@ class App extends React.Component {
   };
 
   render() {
+    const { fishes, order } = this.state;
+    const { match } = this.props;
     return (
       <div className="catch-of-the-day">
         <div className="menu">
           <Header tagline="Fresh Seafood Market" />
           <ul className="fishes">
-            {Object.keys(this.state.fishes).map(key => (
+            {Object.keys(fishes).map(key => (
               <Fish
                 key={key}
                 index={key}
-                details={this.state.fishes[key]}
+                details={fishes[key]}
                 addToOrder={this.addToOrder}
               />
             ))}
           </ul>
         </div>
         <Order
-          fishes={this.state.fishes}
-          order={this.state.order}
+          fishes={fishes}
+          order={order}
           removeFromOrder={this.removeFromOrder}
         />
         <Inventory
@@ -117,8 +121,8 @@ class App extends React.Component {
           updateFish={this.updateFish}
           deleteFish={this.deleteFish}
           loadSampleFishes={this.loadSampleFishes}
-          fishes={this.state.fishes}
-          storeId={this.props.match.params.storeId}
+          fishes={fishes}
+          storeId={match.params.storeId}
         />
       </div>
     );

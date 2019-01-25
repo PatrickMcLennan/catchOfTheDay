@@ -1,18 +1,23 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
-class AddFishForm extends React.Component {
+class AddFishForm extends Component {
   nameRef = React.createRef();
+
   priceRef = React.createRef();
+
   statusRef = React.createRef();
+
   descRef = React.createRef();
+
   imageRef = React.createRef();
 
   static propTypes = {
-    addFish: PropTypes.func
+    addFish: PropTypes.func.isRequired,
   };
 
-  createFish = event => {
+  createFish = (event) => {
+    const { addFish } = this.props;
     // 1.  stop the form from submitting
     event.preventDefault();
     const fish = {
@@ -20,12 +25,13 @@ class AddFishForm extends React.Component {
       price: parseFloat(this.priceRef.current.value),
       status: this.statusRef.current.value,
       desc: this.descRef.current.value,
-      image: this.imageRef.current.value
+      image: this.imageRef.current.value,
     };
-    this.props.addFish(fish);
+    addFish(fish);
     // refresh the form
     event.currentTarget.reset();
   };
+
   render() {
     return (
       <form className="fish-edit" onSubmit={this.createFish}>
